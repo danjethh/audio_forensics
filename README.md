@@ -57,7 +57,7 @@ By the end of this lab-based implementation, the following milestones were achie
    Successfully applied the Isolation Forest algorithm to identify abnormal patterns in unlabeled audio data.
 
 2. **Lightweight Feature Representation**  
-   Used minimal yet meaningful features—\texttt{Duration} and \texttt{Sample Rate}—ensuring low computational cost.
+   Used minimal yet meaningful features—\textttDuration and \Sample Rate—ensuring low computational cost.
 
 3. **Tampering Identification**  
    Accurately flagged structurally anomalous audio (e.g., unusual durations) as potentially tampered.
