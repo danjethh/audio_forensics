@@ -86,12 +86,12 @@ This system is designed to:
 
 The dataset used in this project is sourced from a publicly available audio forensic dataset hosted on GitHub. It contains a collection of untampered (genuine) audio recordings, each represented by several derived acoustic features.
 
-- **GitHub Dataset**: [Audio Forensics Dataset](https://raw.githubusercontent.com/danjethh/audio_forensics/main/Values.csv.xls)
+- **GitHub Dataset**: [Audio Forensics Dataset](https://raw.githubusercontent.com/danjethh/audio_forensics/main/Values.csv)
 
 You can load this dataset using Python’s `pandas` library:
 ```python
 import pandas as pd
-df = pd.read_csv("https://raw.githubusercontent.com/danjethh/audio_forensics/main/Values.csv.xls")
+df = pd.read_csv("https://raw.githubusercontent.com/danjethh/audio_forensics/main/Values.csv")
 ```
 
 ### Step 2: Clean Dataset and Select Relevant Features
@@ -102,7 +102,7 @@ From the 27 available features, only two were selected for model training:
 - `Duration (ss)`
 - `Sample Rate (Hz)`
 
-These features were chosen because they are computationally simple and can be directly extracted from any `.wav` file using tools like [`librosa`](https://librosa.org/). To ensure data integrity:
+These features were chosen because they are computationally simple and can be read directly from the header of any audio file (the notebook uses the lightweight [`soundfile`](https://python-soundfile.readthedocs.io/) library). To ensure data integrity:
 
 - All non-relevant columns were dropped  
 - Rows with missing values were excluded  
@@ -126,7 +126,7 @@ These features were chosen because they are computationally simple and can be di
  **What happened?**  
 An Isolation Forest model was trained on the cleaned feature matrix consisting of `Duration` and `Sample Rate`. This unsupervised learning algorithm builds multiple random trees and isolates data points that differ significantly from the rest.
 
-- Trained on 611 audio samples
+- Trained on 614 audio samples
 - Automatically learned the “normal” distribution of untampered audio
 - Labeled statistically unusual samples as anomalies
 
@@ -164,7 +164,7 @@ This diagnostic step ensures that the anomaly detector is balanced and reliable 
 
  **What happened?**  
 - A test audio file (hosted on GitHub) was downloaded for evaluation.
-- Its `Duration` and `Sample Rate` were extracted using the `librosa` audio analysis library.
+- Its `Duration` and `Sample Rate` were read from the file header using the `soundfile` library.
 
  **Why this matters:**  
 - To make a valid prediction, we must extract the same features used during training.
@@ -199,3 +199,21 @@ If the model predicts `1`:
 > “The model flagged this audio as **NORMAL** (no anomalies detected).”
 
 In this case study, the model flagged the suspicious audio file as **ANOMALOUS** (`-1`), indicating that its characteristics deviated significantly from the baseline established during training.
+
+
+### Step 7: Simulate Tampering and Test the Detector
+
+The notebook creates its own 60-second, 48 kHz recording, then makes a **spliced** copy (15 seconds cut out) and a **re-sampled** copy (44.1 kHz). With the default setting the original is judged normal and both edited copies are flagged.
+
+### Step 8: Tune the Sensitivity
+
+The `contamination` setting decides how strict the detector is. Strict (`auto`) flags 183 of the 614 genuine recordings (false alarms) but catches both edits. Lenient settings flag far fewer genuine files but miss the re-sampled file (0.10, 0.05) or both edits (0.01). There is no universally correct value: it depends on the cost of a false alarm versus a missed edit.
+
+> **Reading the result correctly:** an *anomaly* means "different from the training recordings", not "tampered". All 140 genuine 44.1 kHz recordings in the dataset are flagged because they are a minority group. A flag is a lead for further examination, not a finding.
+
+
+## How to Run the Lab (no installation on your own computer)
+
+1. Open `audio_forensic_using_ai.ipynb` in your hosted Jupyter environment (or click the *Open in Colab* badge inside the notebook).
+2. Run all cells from top to bottom (Jupyter: *Kernel, Restart & Run All*; Colab: *Runtime, Run all*).
+3. The first cell installs any missing library inside the hosted session, and the notebook downloads the dataset (`Values.csv`) and the example audio file itself. You do not need to upload or download anything.
