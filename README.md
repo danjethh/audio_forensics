@@ -1,5 +1,7 @@
 ##  Audio Tampering Detection Using Unsupervised Machine Learning
 
+**Slides:** [lecture deck (PDF)](slides/SectraTEK_Practical2_Audio_Forensics.pdf) : [PowerPoint](slides/SectraTEK_Practical2_Audio_Forensics.pptx)
+
 ##  Problem Statement
 
 In the field of digital forensics, **audio evidence** plays a crucial role in criminal investigations, legal proceedings, intelligence gathering, and whistleblower protection. However, the integrity of audio recordings is increasingly under threat due to the rise of sophisticated editing tools and artificial voice synthesis technologies.
