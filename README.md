@@ -1,8 +1,17 @@
+<p align="center">
+  <a href="slides/SectraTEK_Practical2_Audio_Forensics.pdf"><img src="slides/img/cover.png" alt="Practical 2: Audio Forensics - lecture deck cover" width="880"></a>
+</p>
+
 ##  Audio Tampering Detection Using Unsupervised Machine Learning
 
 **Slides:** [lecture deck (PDF)](slides/SectraTEK_Practical2_Audio_Forensics.pdf) : [PowerPoint](slides/SectraTEK_Practical2_Audio_Forensics.pptx)
 
 ##  Problem Statement
+
+<p align="center">
+  <img src="slides/img/anatomy_of_a_splice.png" alt="The anatomy of a splice in an audio recording" width="840"><br>
+  <sub><em>The anatomy of a splice: cut fifteen seconds out and join the ends, and the recording is a different length - a change the ear may miss but a computer can measure.</em></sub>
+</p>
 
 In the field of digital forensics, **audio evidence** plays a crucial role in criminal investigations, legal proceedings, intelligence gathering, and whistleblower protection. However, the integrity of audio recordings is increasingly under threat due to the rise of sophisticated editing tools and artificial voice synthesis technologies.
 
@@ -73,6 +82,11 @@ By the end of this lab-based implementation, the following milestones were achie
 
 ##  Goal of the Lab
 
+<p align="center">
+  <img src="slides/img/pipeline.png" alt="The whole audio-forensics pipeline, mapped to the notebook" width="840"><br>
+  <sub><em>The whole pipeline, mapped to the lab notebook: load, clean, train, interpret, score a file, simulate edits, tune - each step is one cell you run.</em></sub>
+</p>
+
 The goal of this lab is to develop an AI-powered system that can detect potentially tampered audio recordings using a lightweight, unsupervised machine learning approach. Specifically, it leverages the **Isolation Forest** algorithm trained on a minimal set of acoustic features.
 
 This system is designed to:
@@ -124,6 +138,11 @@ These features were chosen because they are computationally simple and can be re
 
 
 ### Step 3: Train Isolation Forest Model
+
+<p align="center">
+  <img src="slides/img/isolation_forest.png" alt="An Isolation Forest flags the rare recording" width="840"><br>
+  <sub><em>An Isolation Forest makes random cuts through the data; odd points fall out in few cuts, so the rare recording gets a high anomaly score without ever being shown a tampered example.</em></sub>
+</p>
 
  **What happened?**  
 An Isolation Forest model was trained on the cleaned feature matrix consisting of `Duration` and `Sample Rate`. This unsupervised learning algorithm builds multiple random trees and isolates data points that differ significantly from the rest.
